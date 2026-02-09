@@ -80,13 +80,7 @@ export default function Projects() {
             Each project is a different planet in my coding universe
           </p>
 
-          <div className="mt-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm text-muted-foreground">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38bdf8] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#38bdf8]" />
-            </span>
-            Upcoming projects will be displayed here
-          </div>
+          
         </div>
 
         {/* Projects grid */}
