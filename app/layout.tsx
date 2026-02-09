@@ -1,7 +1,6 @@
 import type React from "react"
-import type { Metadata } from "next"
-import { Orbitron } from "next/font/google"
-import { Poppins } from "next/font/google"
+import type { Metadata, Viewport } from "next"
+import { Orbitron, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
@@ -12,17 +11,20 @@ const orbitron = Orbitron({
   display: "swap",
 })
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
+  variable: "--font-inter",
   display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: "Dewan Gurung | Futuristic Front-end Developer",
-  description: "Exploring code across the digital galaxy",
-  generator: "v0.app",
+  title: "Dewan Gurung | Front-end Developer",
+  description: "Building immersive digital experiences with modern web technologies",
+    generator: 'v0.app'
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0a0e17",
 }
 
 export default function RootLayout({
@@ -32,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${orbitron.variable} ${poppins.variable} font-[family-name:var(--font-poppins)] antialiased`}>
+      <body className={`${orbitron.variable} ${inter.variable} font-sans antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>

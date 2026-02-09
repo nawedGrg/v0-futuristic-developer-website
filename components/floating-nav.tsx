@@ -3,18 +3,21 @@
 import { useState, useEffect } from "react"
 import { Home, User, Briefcase, Mail } from "lucide-react"
 
+const navItems = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "about", label: "About", icon: User },
+  { id: "projects", label: "Projects", icon: Briefcase },
+  { id: "contact", label: "Contact", icon: Mail },
+]
+
 export default function FloatingNav() {
   const [activeSection, setActiveSection] = useState("home")
-
-  const navItems = [
-    { id: "home", label: "Home", icon: Home },
-    { id: "about", label: "About", icon: User },
-    { id: "projects", label: "Projects", icon: Briefcase },
-    { id: "contact", label: "Contact", icon: Mail },
-  ]
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
+      setVisible(window.scrollY > 300)
+
       const sections = navItems.map((item) => document.getElementById(item.id))
       const scrollPosition = window.scrollY + window.innerHeight / 2
 
@@ -27,7 +30,7 @@ export default function FloatingNav() {
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -39,40 +42,40 @@ export default function FloatingNav() {
   }
 
   return (
-    <nav className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
-      {navItems.map((item) => {
-        const Icon = item.icon
-        const isActive = activeSection === item.id
+    <nav
+      className={`fixed bottom-8 right-8 z-50 flex flex-col gap-2 transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+    >
+      <div className="glass-strong rounded-2xl p-2 flex flex-col gap-1">
+        {navItems.map((item) => {
+          const Icon = item.icon
+          const isActive = activeSection === item.id
 
-        return (
-          <button
-            key={item.id}
-            onClick={() => scrollToSection(item.id)}
-            className={`group relative flex items-center justify-center w-14 h-14 rounded-full border-2 transition-all duration-300 ${
-              isActive
-                ? "bg-[#00FFFF]/20 border-[#00FFFF] shadow-[0_0_20px_rgba(0,255,255,0.5)]"
-                : "bg-background/80 border-[#00FFFF]/30 hover:border-[#00FFFF] hover:bg-[#00FFFF]/10"
-            } backdrop-blur-sm`}
-            aria-label={item.label}
-          >
-            <Icon
-              className={`w-6 h-6 transition-colors ${
-                isActive ? "text-[#00FFFF]" : "text-foreground/60 group-hover:text-[#00FFFF]"
+          return (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className={`group relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300 ${
+                isActive
+                  ? "bg-[#38bdf8]/15 text-[#38bdf8]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"
               }`}
-            />
-
-            {/* Tooltip */}
-            <span
-              className="absolute right-full mr-3 px-3 py-1.5 bg-background/90 border border-[#00FFFF]/30 rounded-lg 
-                         text-sm font-[family-name:var(--font-orbitron)] text-[#00FFFF] whitespace-nowrap
-                         opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none
-                         backdrop-blur-sm"
+              aria-label={item.label}
             >
-              {item.label}
-            </span>
-          </button>
-        )
-      })}
+              <Icon className="w-4 h-4" />
+
+              {/* Tooltip */}
+              <span
+                className="absolute right-full mr-3 px-3 py-1.5 glass-strong rounded-lg 
+                           text-xs font-medium text-foreground whitespace-nowrap
+                           opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0
+                           transition-all duration-200 pointer-events-none"
+              >
+                {item.label}
+              </span>
+            </button>
+          )
+        })}
+      </div>
     </nav>
   )
 }
