@@ -1,7 +1,5 @@
 "use client"
 
-import React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github } from "lucide-react"
@@ -14,8 +12,7 @@ const projects = [
     description: "A futuristic personal developer portfolio showcasing skills, projects, and modern UI design.",
     color: "#00FFFF",
     tech: ["React", "Tailwind CSS", "Modern UI Design"],
-    details:
-      "A futuristic personal developer portfolio showcasing my skills, projects, and modern UI design. Built with responsive layouts and interactive components.",
+    details: "A futuristic personal developer portfolio showcasing my skills, projects, and modern UI design. Built with responsive layouts and interactive components.",
     demo: "https://v0-futuristic-developer-website.vercel.app",
     github: "https://github.com/nawedGrg/v0-futuristic-developer-website",
   },
@@ -25,8 +22,7 @@ const projects = [
     description: "A programming quiz platform to help beginners practice coding concepts through interactive quizzes.",
     color: "#B026FF",
     tech: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
-    details:
-      "A programming quiz platform designed to help beginners practice coding concepts through interactive quizzes and score tracking.",
+    details: "A programming quiz platform designed to help beginners practice coding concepts through interactive quizzes and score tracking.",
     demo: null,
     github: "https://github.com/nawedGrg/CodeQuest---Code-Learning-Quiz-Game/tree/main/codequest",
   },
@@ -36,8 +32,7 @@ const projects = [
     description: "A web app displaying real-time weather information for any city using API integration.",
     color: "#F8D568",
     tech: ["JavaScript", "API Integration", "Responsive Design"],
-    details:
-      "A web application that displays real-time weather information for any city using API integration and responsive UI.",
+    details: "A web application that displays real-time weather information for any city using API integration and responsive UI.",
     demo: "https://vivid-sky-view.lovable.app",
     github: null,
   },
@@ -47,8 +42,7 @@ const projects = [
     description: "An e-commerce fashion store interface with product browsing and modern responsive layouts.",
     color: "#00FFFF",
     tech: ["HTML", "CSS", "JavaScript"],
-    details:
-      "An e-commerce fashion store interface featuring product browsing, modern layouts, and responsive design.",
+    details: "An e-commerce fashion store interface featuring product browsing, modern layouts, and responsive design.",
     demo: "https://sleek-wardrobe-explorer.lovable.app",
     github: null,
   },
@@ -78,20 +72,15 @@ export default function Projects() {
         </div>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project) => (
             <button
               key={project.id}
               type="button"
               onClick={() => setSelectedProject(project)}
-              className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-left transition-all duration-500 hover:scale-105 hover:border-transparent cursor-pointer"
-              style={
-                {
-                  "--project-color": project.color,
-                } as React.CSSProperties
-              }
+              className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-left transition-all duration-500 hover:scale-[1.03] hover:border-transparent cursor-pointer"
             >
-              {/* Glow border on hover */}
+              {/* Glow effect on hover */}
               <div
                 className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"
                 style={{ backgroundColor: `${project.color}30` }}
@@ -112,10 +101,7 @@ export default function Projects() {
                 />
                 <div
                   className="absolute inset-1 rounded-full border border-dashed opacity-40 animate-spin"
-                  style={{
-                    borderColor: project.color,
-                    animationDuration: "8s",
-                  }}
+                  style={{ borderColor: project.color, animationDuration: "8s" }}
                 />
               </div>
 
@@ -152,7 +138,7 @@ export default function Projects() {
                 className="mt-4 text-center text-xs font-[family-name:var(--font-orbitron)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ color: project.color }}
               >
-                {"[ CLICK TO EXPLORE ]"}
+                {"[ VIEW PROJECT ]"}
               </div>
             </button>
           ))}
@@ -195,57 +181,34 @@ export default function Projects() {
 
                 <div className="flex gap-4 pt-4">
                   {selectedProject?.demo ? (
-                    <a
-                      href={selectedProject.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1"
-                    >
+                    <a href={selectedProject.demo} target="_blank" rel="noopener noreferrer" className="flex-1">
                       <Button
                         className="w-full font-[family-name:var(--font-orbitron)]"
-                        style={{
-                          backgroundColor: selectedProject.color,
-                          color: "#0d1b2a",
-                        }}
+                        style={{ backgroundColor: selectedProject.color, color: "#0d1b2a" }}
                       >
                         <ExternalLink className="w-4 h-4 mr-2" />
                         LIVE DEMO
                       </Button>
                     </a>
                   ) : (
-                    <Button
-                      disabled
-                      className="flex-1 font-[family-name:var(--font-orbitron)] opacity-40"
-                    >
+                    <Button disabled className="flex-1 font-[family-name:var(--font-orbitron)] opacity-40">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       NO DEMO
                     </Button>
                   )}
                   {selectedProject?.github ? (
-                    <a
-                      href={selectedProject.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1"
-                    >
+                    <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" className="flex-1">
                       <Button
                         variant="outline"
                         className="w-full font-[family-name:var(--font-orbitron)] bg-transparent"
-                        style={{
-                          borderColor: selectedProject.color,
-                          color: selectedProject.color,
-                        }}
+                        style={{ borderColor: selectedProject.color, color: selectedProject.color }}
                       >
                         <Github className="w-4 h-4 mr-2" />
                         SOURCE CODE
                       </Button>
                     </a>
                   ) : (
-                    <Button
-                      disabled
-                      variant="outline"
-                      className="flex-1 font-[family-name:var(--font-orbitron)] bg-transparent opacity-40"
-                    >
+                    <Button disabled variant="outline" className="flex-1 font-[family-name:var(--font-orbitron)] bg-transparent opacity-40">
                       <Github className="w-4 h-4 mr-2" />
                       NO SOURCE
                     </Button>
