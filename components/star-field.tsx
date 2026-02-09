@@ -12,7 +12,6 @@ export default function StarField() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -20,7 +19,6 @@ export default function StarField() {
     resizeCanvas()
     window.addEventListener("resize", resizeCanvas)
 
-    // Create stars
     const stars: Array<{
       x: number
       y: number
@@ -28,52 +26,53 @@ export default function StarField() {
       vx: number
       vy: number
       opacity: number
+      baseOpacity: number
     }> = []
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 150; i++) {
+      const baseOpacity = 0.15 + Math.random() * 0.6
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 2,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        opacity: Math.random(),
+        radius: Math.random() * 1.5 + 0.3,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        opacity: baseOpacity,
+        baseOpacity,
       })
     }
 
-    // Animation loop
-    const animate = () => {
-      ctx.fillStyle = "rgba(13, 27, 42, 0.1)"
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    let animationId: number
 
-      stars.forEach((star) => {
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      for (const star of stars) {
         star.x += star.vx
         star.y += star.vy
 
-        // Wrap around edges
         if (star.x < 0) star.x = canvas.width
         if (star.x > canvas.width) star.x = 0
         if (star.y < 0) star.y = canvas.height
         if (star.y > canvas.height) star.y = 0
 
-        // Twinkle effect
-        star.opacity += (Math.random() - 0.5) * 0.05
-        star.opacity = Math.max(0.2, Math.min(1, star.opacity))
+        star.opacity += (Math.random() - 0.5) * 0.02
+        star.opacity = Math.max(star.baseOpacity * 0.5, Math.min(star.baseOpacity * 1.3, star.opacity))
 
-        // Draw star
         ctx.beginPath()
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(119, 141, 169, ${star.opacity})`
+        ctx.fillStyle = `rgba(148, 163, 184, ${star.opacity})`
         ctx.fill()
-      })
+      }
 
-      requestAnimationFrame(animate)
+      animationId = requestAnimationFrame(animate)
     }
 
     animate()
 
     return () => {
       window.removeEventListener("resize", resizeCanvas)
+      cancelAnimationFrame(animationId)
     }
   }, [])
 
@@ -82,7 +81,7 @@ export default function StarField() {
       ref={canvasRef}
       className="fixed inset-0 z-0"
       style={{
-        background: "linear-gradient(180deg, #0d1b2a 0%, #1b263b 40%, #415a77 70%, #778da9 100%)",
+        background: "linear-gradient(180deg, #0a0e17 0%, #0f172a 50%, #0a0e17 100%)",
       }}
     />
   )

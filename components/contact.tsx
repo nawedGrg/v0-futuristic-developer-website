@@ -1,18 +1,61 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
-import { Card } from "@/components/ui/card"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Github, Linkedin, Mail, Twitter, Send } from "lucide-react"
+import { Github, Linkedin, Mail, Twitter, Send, CheckCircle2 } from "lucide-react"
+
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setInView(true) }, { threshold })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [threshold])
+  return { ref, inView }
+}
+
+const socials = [
+  {
+    icon: Github,
+    label: "GitHub",
+    handle: "@nawedGrg",
+    url: "https://github.com/nawedGrg",
+    color: "#38bdf8",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    handle: "Dewan Gurung",
+    url: "https://www.linkedin.com/in/dewan-gurung-b3a127304/",
+    color: "#a78bfa",
+  },
+  {
+    icon: Twitter,
+    label: "Twitter / X",
+    handle: "@dewangurung_",
+    url: "https://x.com/dewangurung_?s=21",
+    color: "#fbbf24",
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    handle: "dewangurung34g@icloud.com",
+    url: "mailto:dewangurung34g@icloud.com",
+    color: "#38bdf8",
+  },
+]
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })
+  const { ref, inView } = useInView()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,16 +64,14 @@ export default function Contact() {
     try {
       const response = await fetch("https://formspree.io/f/myzavrqw", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
 
       if (response.ok) {
         setSubmitted(true)
         setFormData({ name: "", email: "", message: "" })
-        setTimeout(() => setSubmitted(false), 3000)
+        setTimeout(() => setSubmitted(false), 4000)
       }
     } catch (error) {
       console.error("Form submission error:", error)
@@ -40,156 +81,140 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center px-4 py-20">
-      <div className="max-w-4xl w-full space-y-16">
+    <section id="contact" className="min-h-screen flex items-center justify-center px-6 py-24">
+      <div ref={ref} className="max-w-5xl w-full">
         {/* Section header */}
-        <div className="text-center space-y-4">
-          <h2 className="font-[family-name:var(--font-orbitron)] text-4xl md:text-6xl font-bold glow-text text-[#00FFFF]">
-            🛰️ SEND TRANSMISSION
+        <div className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p className="font-[family-name:var(--font-orbitron)] text-sm tracking-[0.3em] uppercase text-[#38bdf8] mb-3">
+            Contact
+          </p>
+          <h2 className="font-[family-name:var(--font-orbitron)] text-3xl md:text-5xl font-bold text-foreground tracking-tight mb-4">
+            Get in Touch
           </h2>
-          <p className="text-lg text-card">Reach out to the command station</p>
-          <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-[#00FFFF] to-transparent" />
+          <p className="text-muted-foreground max-w-md mx-auto">
+            Have a project in mind or just want to say hello? Send me a message.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Contact form */}
-          <Card className="neon-border backdrop-blur-sm p-8 bg-foreground">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-[family-name:var(--font-orbitron)] text-[#00FFFF]">SENDER ID</label>
+          <div className={`glass rounded-2xl p-8 transition-all duration-700 delay-150 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-[family-name:var(--font-orbitron)] uppercase tracking-wider text-muted-foreground">
+                  Name
+                </label>
                 <Input
                   type="text"
                   placeholder="Your name"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-background/50 border-[#00FFFF]/30 focus:border-[#00FFFF] focus:ring-[#00FFFF]/20"
+                  className="bg-white/[0.03] border-white/[0.08] rounded-xl focus:border-[#38bdf8]/50 focus:ring-[#38bdf8]/20 placeholder:text-muted-foreground/40"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-[family-name:var(--font-orbitron)] text-[#00FFFF]">
-                  SIGNAL FREQUENCY
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-[family-name:var(--font-orbitron)] uppercase tracking-wider text-muted-foreground">
+                  Email
                 </label>
                 <Input
                   type="email"
-                  placeholder="your.email@galaxy.com"
+                  placeholder="you@example.com"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="bg-background/50 border-[#00FFFF]/30 focus:border-[#00FFFF] focus:ring-[#00FFFF]/20"
+                  className="bg-white/[0.03] border-white/[0.08] rounded-xl focus:border-[#38bdf8]/50 focus:ring-[#38bdf8]/20 placeholder:text-muted-foreground/40"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-[family-name:var(--font-orbitron)] text-[#00FFFF]">
-                  MESSAGE CONTENT
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-[family-name:var(--font-orbitron)] uppercase tracking-wider text-muted-foreground">
+                  Message
                 </label>
                 <Textarea
-                  placeholder="Transmit your message..."
+                  placeholder="Tell me about your project..."
                   required
                   rows={5}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="bg-background/50 border-[#00FFFF]/30 focus:border-[#00FFFF] focus:ring-[#00FFFF]/20 resize-none"
+                  className="bg-white/[0.03] border-white/[0.08] rounded-xl focus:border-[#38bdf8]/50 focus:ring-[#38bdf8]/20 resize-none placeholder:text-muted-foreground/40"
                 />
               </div>
 
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full font-[family-name:var(--font-orbitron)] bg-[#00FFFF] text-[#0d1b2a] hover:bg-[#00FFFF]/90 hover:shadow-[0_0_30px_rgba(0,255,255,0.5)] disabled:opacity-50"
+                className="w-full font-[family-name:var(--font-orbitron)] text-xs uppercase tracking-wider bg-[#38bdf8] text-[#0a0e17] rounded-xl hover:bg-[#38bdf8]/90 hover:shadow-[0_0_30px_rgba(56,189,248,0.2)] transition-all disabled:opacity-50"
               >
-                <Send className="w-4 h-4 mr-2" />
-                {isLoading ? "TRANSMITTING..." : "TRANSMIT MESSAGE"}
+                {isLoading ? (
+                  "Sending..."
+                ) : submitted ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                    Message Sent
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    Send Message
+                  </>
+                )}
               </Button>
-
-              {submitted && (
-                <div className="text-center p-4 rounded bg-[#00FFFF]/10 border border-[#00FFFF]/30 animate-pulse-glow">
-                  <p className="text-[#00FFFF] font-[family-name:var(--font-orbitron)]">✓ TRANSMISSION RECEIVED</p>
-                </div>
-              )}
             </form>
-          </Card>
+          </div>
 
-          {/* Social links */}
-          <div className="space-y-8">
-            <Card className="backdrop-blur-sm p-8 border-[#B026FF]/30 bg-foreground">
-              <h3 className="font-[family-name:var(--font-orbitron)] text-2xl font-bold text-[#B026FF] mb-6">
-                COMMUNICATION CHANNELS
+          {/* Right column */}
+          <div className={`flex flex-col gap-4 transition-all duration-700 delay-300 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            {/* Social links */}
+            <div className="glass rounded-2xl p-8 flex-1">
+              <h3 className="font-[family-name:var(--font-orbitron)] text-xs uppercase tracking-wider text-muted-foreground mb-6">
+                Connect
               </h3>
-              <div className="space-y-4">
-                {[
-                  {
-                    icon: Github,
-                    label: "GitHub",
-                    handle: "@nawedGrg",
-                    color: "#00FFFF",
-                    url: "https://github.com/nawedGrg",
-                  },
-                  {
-                    icon: Linkedin,
-                    label: "LinkedIn",
-                    handle: "Dewan Gurung",
-                    color: "#B026FF",
-                    url: "https://www.linkedin.com/in/dewan-gurung-b3a127304/",
-                  },
-                  {
-                    icon: Twitter,
-                    label: "Twitter",
-                    handle: "@dewangurung_",
-                    color: "#F8D568",
-                    url: "https://x.com/dewangurung_?s=21",
-                  },
-                  {
-                    icon: Mail,
-                    label: "Email",
-                    handle: "dewangurung34g@icloud.com",
-                    color: "#00FFFF",
-                    url: "mailto:dewangurung34g@icloud.com",
-                  },
-                ].map((social) => (
+              <div className="flex flex-col gap-3">
+                {socials.map((social) => (
                   <a
                     key={social.label}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 rounded-lg transition-all hover:scale-105"
-                    style={{
-                      backgroundColor: `${social.color}10`,
-                      border: `1px solid ${social.color}30`,
-                    }}
+                    className="group flex items-center gap-4 p-3 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
                   >
-                    <social.icon className="w-6 h-6" style={{ color: social.color }} />
+                    <div
+                      className="flex items-center justify-center w-10 h-10 rounded-lg transition-transform duration-300 group-hover:scale-110"
+                      style={{ backgroundColor: `${social.color}10` }}
+                    >
+                      <social.icon className="w-5 h-5" style={{ color: social.color }} />
+                    </div>
                     <div>
-                      <p className="font-semibold" style={{ color: social.color }}>
-                        {social.label}
-                      </p>
-                      <p className="text-sm text-chart-2">{social.handle}</p>
+                      <p className="text-sm font-medium text-foreground">{social.label}</p>
+                      <p className="text-xs text-muted-foreground">{social.handle}</p>
                     </div>
                   </a>
                 ))}
               </div>
-            </Card>
+            </div>
 
-            {/* Status card */}
-            <Card className="backdrop-blur-sm p-8 border-[#F8D568]/30 text-background bg-foreground">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 rounded-full bg-[#F8D568] animate-pulse-glow" />
-                <h3 className="font-[family-name:var(--font-orbitron)] text-xl font-bold text-[#F8D568]">
-                  SYSTEM STATUS
-                </h3>
+            {/* Status */}
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-400" />
+                </div>
+                <p className="text-sm text-foreground">
+                  Currently accepting new projects and collaborations.
+                </p>
               </div>
-              <p className="text-chart-2">
-                All systems operational. Currently accepting new missions and collaborations.
-              </p>
-            </Card>
+            </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="text-center pt-12 border-t border-border/30">
-          <p className="text-card">© 2025 Dewan Gurung. Exploring the digital cosmos, one line of code at a time.</p>
+        <div className="text-center mt-20 pt-8 border-t border-white/[0.06]">
+          <p className="text-sm text-muted-foreground">
+            Dewan Gurung &middot; {new Date().getFullYear()}
+          </p>
         </div>
       </div>
     </section>
