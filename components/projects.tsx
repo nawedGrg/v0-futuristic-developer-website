@@ -1,5 +1,7 @@
 "use client"
 
+import React from "react"
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github } from "lucide-react"
@@ -8,63 +10,47 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 const projects = [
   {
     id: 1,
-    name: "Planet Alpha",
-    description: "E-commerce platform with modern UI",
+    name: "AI Portfolio Website",
+    description: "A futuristic personal developer portfolio showcasing skills, projects, and modern UI design.",
     color: "#00FFFF",
-    tech: ["React", "Next.js", "Tailwind CSS", "Stripe"],
-    details: "A fully functional e-commerce platform with cart management, payment integration, and admin dashboard.",
-    demo: "#",
-    github: "#",
+    tech: ["React", "Tailwind CSS", "Modern UI Design"],
+    details:
+      "A futuristic personal developer portfolio showcasing my skills, projects, and modern UI design. Built with responsive layouts and interactive components.",
+    demo: "https://v0-futuristic-developer-website.vercel.app",
+    github: "https://github.com/nawedGrg/v0-futuristic-developer-website",
   },
   {
     id: 2,
-    name: "Planet Beta",
-    description: "Social media dashboard",
+    name: "CodeQuest",
+    description: "A programming quiz platform to help beginners practice coding concepts through interactive quizzes.",
     color: "#B026FF",
-    tech: ["React", "TypeScript", "Firebase", "Chart.js"],
-    details: "Real-time social media analytics dashboard with interactive charts and data visualization.",
-    demo: "#",
-    github: "#",
+    tech: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+    details:
+      "A programming quiz platform designed to help beginners practice coding concepts through interactive quizzes and score tracking.",
+    demo: null,
+    github: "https://github.com/nawedGrg/CodeQuest---Code-Learning-Quiz-Game/tree/main/codequest",
   },
   {
     id: 3,
-    name: "Planet Gamma",
-    description: "AI-powered chat application",
+    name: "Weather App",
+    description: "A web app displaying real-time weather information for any city using API integration.",
     color: "#F8D568",
-    tech: ["Next.js", "OpenAI API", "Prisma", "PostgreSQL"],
-    details: "Intelligent chatbot application with conversation history and context-aware responses.",
-    demo: "#",
-    github: "#",
+    tech: ["JavaScript", "API Integration", "Responsive Design"],
+    details:
+      "A web application that displays real-time weather information for any city using API integration and responsive UI.",
+    demo: "https://vivid-sky-view.lovable.app",
+    github: null,
   },
   {
     id: 4,
-    name: "Planet Delta",
-    description: "Portfolio template builder",
+    name: "Fashion Store",
+    description: "An e-commerce fashion store interface with product browsing and modern responsive layouts.",
     color: "#00FFFF",
-    tech: ["React", "Framer Motion", "Tailwind CSS"],
-    details: "Drag-and-drop portfolio builder with customizable themes and export functionality.",
-    demo: "#",
-    github: "#",
-  },
-  {
-    id: 5,
-    name: "Planet Epsilon",
-    description: "Task management system",
-    color: "#B026FF",
-    tech: ["Next.js", "Supabase", "Zustand", "DnD Kit"],
-    details: "Collaborative task management with real-time updates, drag-and-drop, and team features.",
-    demo: "#",
-    github: "#",
-  },
-  {
-    id: 6,
-    name: "Planet Zeta",
-    description: "Weather forecast app",
-    color: "#F8D568",
-    tech: ["React", "OpenWeather API", "Recharts"],
-    details: "Beautiful weather application with 7-day forecasts, interactive maps, and weather alerts.",
-    demo: "#",
-    github: "#",
+    tech: ["HTML", "CSS", "JavaScript"],
+    details:
+      "An e-commerce fashion store interface featuring product browsing, modern layouts, and responsive design.",
+    demo: "https://sleek-wardrobe-explorer.lovable.app",
+    github: null,
   },
 ]
 
@@ -93,7 +79,83 @@ export default function Projects() {
 
         {/* Projects grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => null)}
+          {projects.map((project) => (
+            <button
+              key={project.id}
+              type="button"
+              onClick={() => setSelectedProject(project)}
+              className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-left transition-all duration-500 hover:scale-105 hover:border-transparent cursor-pointer"
+              style={
+                {
+                  "--project-color": project.color,
+                } as React.CSSProperties
+              }
+            >
+              {/* Glow border on hover */}
+              <div
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"
+                style={{ backgroundColor: `${project.color}30` }}
+              />
+              <div
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{ boxShadow: `inset 0 0 30px ${project.color}15, 0 0 30px ${project.color}20` }}
+              />
+
+              {/* Planet icon */}
+              <div className="relative w-16 h-16 mx-auto mb-6">
+                <div
+                  className="w-16 h-16 rounded-full animate-pulse"
+                  style={{
+                    background: `radial-gradient(circle at 35% 35%, ${project.color}, ${project.color}40, transparent)`,
+                    boxShadow: `0 0 25px ${project.color}50, 0 0 50px ${project.color}20`,
+                  }}
+                />
+                <div
+                  className="absolute inset-1 rounded-full border border-dashed opacity-40 animate-spin"
+                  style={{
+                    borderColor: project.color,
+                    animationDuration: "8s",
+                  }}
+                />
+              </div>
+
+              {/* Project info */}
+              <h3
+                className="font-[family-name:var(--font-orbitron)] text-lg font-bold mb-2 text-center"
+                style={{ color: project.color }}
+              >
+                {project.name}
+              </h3>
+              <p className="text-slate-300 text-sm text-center mb-4 leading-relaxed">
+                {project.description}
+              </p>
+
+              {/* Tech tags */}
+              <div className="flex flex-wrap justify-center gap-2">
+                {project.tech.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 rounded text-xs"
+                    style={{
+                      backgroundColor: `${project.color}15`,
+                      color: project.color,
+                      border: `1px solid ${project.color}30`,
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* View prompt */}
+              <div
+                className="mt-4 text-center text-xs font-[family-name:var(--font-orbitron)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ color: project.color }}
+              >
+                {"[ CLICK TO EXPLORE ]"}
+              </div>
+            </button>
+          ))}
         </div>
 
         {/* Project details modal */}
@@ -132,27 +194,62 @@ export default function Projects() {
                 </div>
 
                 <div className="flex gap-4 pt-4">
-                  <Button
-                    className="flex-1 font-[family-name:var(--font-orbitron)]"
-                    style={{
-                      backgroundColor: selectedProject?.color,
-                      color: "#0d1b2a",
-                    }}
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    LIVE DEMO
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="flex-1 font-[family-name:var(--font-orbitron)] bg-transparent"
-                    style={{
-                      borderColor: selectedProject?.color,
-                      color: selectedProject?.color,
-                    }}
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    SOURCE CODE
-                  </Button>
+                  {selectedProject?.demo ? (
+                    <a
+                      href={selectedProject.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1"
+                    >
+                      <Button
+                        className="w-full font-[family-name:var(--font-orbitron)]"
+                        style={{
+                          backgroundColor: selectedProject.color,
+                          color: "#0d1b2a",
+                        }}
+                      >
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        LIVE DEMO
+                      </Button>
+                    </a>
+                  ) : (
+                    <Button
+                      disabled
+                      className="flex-1 font-[family-name:var(--font-orbitron)] opacity-40"
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      NO DEMO
+                    </Button>
+                  )}
+                  {selectedProject?.github ? (
+                    <a
+                      href={selectedProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1"
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full font-[family-name:var(--font-orbitron)] bg-transparent"
+                        style={{
+                          borderColor: selectedProject.color,
+                          color: selectedProject.color,
+                        }}
+                      >
+                        <Github className="w-4 h-4 mr-2" />
+                        SOURCE CODE
+                      </Button>
+                    </a>
+                  ) : (
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="flex-1 font-[family-name:var(--font-orbitron)] bg-transparent opacity-40"
+                    >
+                      <Github className="w-4 h-4 mr-2" />
+                      NO SOURCE
+                    </Button>
+                  )}
                 </div>
               </DialogDescription>
             </DialogHeader>

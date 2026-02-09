@@ -123,7 +123,7 @@ export default function Contact() {
                   {
                     icon: Github,
                     label: "GitHub",
-                    handle: "@nawedGrg",
+                    handle: "@nawedGrgh",
                     color: "#00FFFF",
                     url: "https://github.com/nawedGrg",
                   },
