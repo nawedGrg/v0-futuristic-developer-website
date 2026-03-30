@@ -1,15 +1,18 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Code2, Database, FileCode2, Globe, Layout, Server } from "lucide-react"
+import { Code2, Database, FileCode2, Globe, Layout, Server, Braces, Atom, CloudCog } from "lucide-react"
 
 const skills = [
   { name: "HTML", icon: Globe, color: "#38bdf8" },
   { name: "CSS", icon: Layout, color: "#a78bfa" },
   { name: "JavaScript", icon: FileCode2, color: "#fbbf24" },
+  { name: "TypeScript", icon: Braces, color: "#3b82f6" },
+  { name: "React", icon: Atom, color: "#61dafb" },
   { name: "Java", icon: Code2, color: "#f97316" },
   { name: "PHP", icon: Server, color: "#a78bfa" },
   { name: "MySQL", icon: Database, color: "#38bdf8" },
+  { name: "Supabase", icon: CloudCog, color: "#3ecf8e" },
 ]
 
 const timeline = [
@@ -90,7 +93,7 @@ export default function About() {
           <h3 className="font-[family-name:var(--font-orbitron)] text-xl font-semibold text-center text-foreground mb-8 tracking-wide">
             Tech Stack
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
             {skills.map((skill) => {
               const Icon = skill.icon
               return (
